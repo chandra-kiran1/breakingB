@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import './App.css';
+import Charactergrid from './components/Charactergrid';
+import Header from './components/ui/Header';
+
+
+
+const  App = ()=> {
+
+  const [items,setItems] = useState([]);
+  const [isloading , setIsloading] = useState(true)
+
+  useEffect (()=>{
+    const fetchItems = async ()=> {
+      const response = await axios('https://www.breakingbadapi.com/api/characters');
+      console.log(response.data)
+      setItems(response.data)
+      setIsloading(false);
+    }
+
+    fetchItems();
+  },[]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Header/>
+      <Charactergrid isloading={isloading} items={items}  />
     </div>
   );
 }
